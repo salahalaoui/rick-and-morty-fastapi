@@ -5,14 +5,14 @@
 To deploy this project using docker :
 
 ```bash
-$ git clone https://github.com/salahalaoui/rick-and-morty-app
+$ git clone https://github.com/salahalaoui/rick-and-morty-fastapi
 ```
 
 Now move to the project root directory. The `.env` is committed to git history
 just for the convenience of the developer reading this code: sensible environment variables should never be published in repositories.
 
 ```bash
-$ mv rick-and-morty-app
+$ mv rick-and-morty-fastapi
 $ docker compose build
 $ docker compose up
 ```

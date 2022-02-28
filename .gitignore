@@ -132,3 +132,5 @@ project.tar
 
 .vscode/
 .idea/
+
+playground.py
