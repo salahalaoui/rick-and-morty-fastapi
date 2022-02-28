@@ -1,0 +1,90 @@
+
+version: "3.8"
+
+services:
+  db:
+    container_name: postgresql_db
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    ports:
+      - 5050:80
+    depends_on:
+      - db
+
+  app:
+    container_name: app
+    build: .
+    env_file:
+      - .env
+    command: bash -c "alembic upgrade head && uvicorn main:app --reload --reload-dir app --host 0.0.0.0"
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    restart: always
+
+  rabbit:
+    hostname: rabbit
+    image: "rabbitmq:3-management"
+    env_file:
+      - .env
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+
+  celery_worker:
+    container_name: celery_worker
+    build: .
+    command: python main.py
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - app
+      - redis
+
+  celery_beat:
+    build: .
+    command: /start-celerybeat
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+
+  flower:
+    container_name: flower
+    build: .
+    command: /flower
+    ports:
+      - 5556:5555
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - app
+      - redis
+      - celery_worker
