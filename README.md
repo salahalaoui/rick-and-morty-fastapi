@@ -17,7 +17,7 @@ $ docker compose build
 $ docker compose up
 ```
 
-The API implements some routes that should not stay unprotected. In order to use these routes you should first authenticate at the top right of the application docs (`0.0.0.0:8080/docs`) in the button that reads `Authorize`. Before that you need to create a new user with the POST `register`
+The API implements some routes that should not stay unprotected. In order to use these routes you should first authenticate at the top right of the application docs (`0.0.0.0:8000/docs`) in the button that reads `Authorize`. Before that you need to create a new user with the POST `register`
 
 ## Migration from json to pricemap
 
@@ -43,7 +43,7 @@ The docker-compose.yml is configured to create :
 - an image of flower to monitor celery tasks at `localhost:5556`.
 - an image of pgadmin for PostgreSQL database administration at `localhost:5050`
 
-To see the application working sound and safe, please visit the URI `localhost:8080/docs`
+To see the application working sound and safe, please visit the URI `localhost:8000/docs`
 
 Instead of using `psycopg2` directly to connect to the postgreSQL database, the api uses SQLAlchemy, an object-relational mapper, we don't need to do sql queries in the python code; instead SQLAlchemy allows to manipulate python objects, which is way more simpler, also, we don't have to deal with the specificity of a database type. SQLAlchemy is an abstraction layer.
 
