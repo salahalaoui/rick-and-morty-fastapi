@@ -33,7 +33,7 @@ from app.schema.character import (
     CharacterCreate,
     CharacterCreateJson,
 )
-from app.schema.auth import Task, TaskResult, Token, TokenData
+from app.schema.auth import Token, TokenData
 from app.schema.comment import (
     Comment,
     CommentUpdate,
