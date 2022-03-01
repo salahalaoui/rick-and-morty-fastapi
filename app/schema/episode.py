@@ -20,7 +20,7 @@ class EpisodeCreate(BaseModel):
             "name": self.name,
             "air_date": str(self.air_date),
             "episode": self.episode,
-            "season": self.season
+            "season": self.season,
         }
         return data
 
@@ -33,7 +33,7 @@ class Episode(EpisodeCreate):
     id: int
 
     def to_dict(self):
-        return {'id': self.id, **EpisodeCreate.to_dict(self)}
+        return {"id": self.id, **EpisodeCreate.to_dict(self)}
 
 
 class EpisodeDB(EpisodeCreate):
@@ -66,7 +66,7 @@ class EpisodeCreateJson(Episode):
         return int(v.split("E")[0].split("S")[1])
 
     def to_dict(self):
-        return {**Episode.to_dict(self), 'characters': self.characters}
+        return {**Episode.to_dict(self), "characters": self.characters}
 
 
 class EpisodeUpdate(BaseModel):

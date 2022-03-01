@@ -30,13 +30,17 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db.query(self.model).filter(self.model.id == id).first()
 
     def get_multi(
-        self, db: Session, *, skip: int = 0, limit: int = 500,
-        filter_parameters: Optional[List[str]] = None
+        self,
+        db: Session,
+        *,
+        skip: int = 0,
+        limit: int = 500,
+        filter_parameters: Optional[List[str]] = None,
     ) -> Tuple[List[ModelType], str]:
         conditions = []
         query = db.query(self.model)
 
-        print(f'filter_parameters {filter_parameters}')
+        print(f"filter_parameters {filter_parameters}")
         if filter_parameters:
             for filter_parameter in filter_parameters:
                 key, *value = filter_parameter.split(":", 1)
@@ -45,21 +49,33 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                 # treat the key as the value
                 if len(value) > 0:
                     if key in sa_inspect(self.model).columns.keys():
-                        conditions.append(cast(self.model.__dict__[key], String).ilike("%" + one(value) + "%"))
+                        conditions.append(
+                            cast(self.model.__dict__[key], String).ilike(
+                                "%" + one(value) + "%"
+                            )
+                        )
                     query = query.filter(or_(*conditions))
                 else:
                     for column in sa_inspect(self.model).columns.keys():
-                        conditions.append(cast(self.model.__dict__[column], String).ilike("%" + key + "%"))
+                        conditions.append(
+                            cast(self.model.__dict__[column], String).ilike(
+                                "%" + key + "%"
+                            )
+                        )
                     query = query.filter(or_(*conditions))
         count = query.count()
         print(query)
         if limit:
             # Limit is not 0: use limit
-            response_range = "{} {}-{}/{}".format(self.model.__table__.name.lower(), skip, skip + limit, count)
+            response_range = "{} {}-{}/{}".format(
+                self.model.__table__.name.lower(), skip, skip + limit, count
+            )
             return query.offset(skip).limit(limit).all(), response_range
         else:
             # Limit is 0: unlimited
-            response_range = "{} {}/{}".format(self.model.__table__.name.lower(), skip, count)
+            response_range = "{} {}/{}".format(
+                self.model.__table__.name.lower(), skip, count
+            )
             return query.offset(skip).all(), response_range
 
     def create(self, db: Session, obj_in: CreateSchemaType) -> ModelType:
@@ -74,7 +90,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db: Session,
         *,
         db_obj: ModelType,
-        obj_in: Union[UpdateSchemaType, Dict[str, Any]]
+        obj_in: Union[UpdateSchemaType, Dict[str, Any]],
     ) -> ModelType:
         obj_data = jsonable_encoder(db_obj)
         if isinstance(obj_in, dict):
@@ -85,7 +101,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             if field in update_data:
                 setattr(db_obj, field, update_data[field])
 
-        if 'updated_at' in self.model.__dict__:
+        if "updated_at" in self.model.__dict__:
             db_obj.updated_at = datetime.utcnow()
 
         db.add(db_obj)

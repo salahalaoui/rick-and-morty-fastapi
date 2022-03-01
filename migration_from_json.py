@@ -57,10 +57,13 @@ def character_injector(parser: ListingDataGenerator):
 
 character_injector(
     parser(
-        schema.CharacterCreateJson, page_fetcher("documents/rick_morty-characters_v1.json")
+        schema.CharacterCreateJson,
+        page_fetcher("documents/rick_morty-characters_v1.json"),
     ),
 )
 
 episode_injector(
-    parser(schema.EpisodeCreateJson, page_fetcher("documents/rick_morty-episodes_v1.json")),
+    parser(
+        schema.EpisodeCreateJson, page_fetcher("documents/rick_morty-episodes_v1.json")
+    ),
 )

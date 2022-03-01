@@ -11,6 +11,7 @@ from app.deps import common_parameters
 from app.database import get_db_session
 from app.deps import get_current_user
 from app import models
+
 router = APIRouter()
 
 
@@ -26,9 +27,9 @@ def get_characters(
 ):
     characters, header_range = crud.character.get_multi(
         db=db,
-        skip=common['skip'],
-        limit=common['limit'],
-        filter_parameters=common["filter"]
+        skip=common["skip"],
+        limit=common["limit"],
+        filter_parameters=common["filter"],
     )
     response.headers["Content-Range"] = header_range
     return characters
@@ -54,9 +55,11 @@ def get_character_by_id(character_id: int, db: Session = Depends(get_db_session)
     "/",
     response_model=schema.Character,
     summary="post character",
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
 )
-def post_character(query: schema.CharacterCreate, db: Session = Depends(get_db_session)):
+def post_character(
+    query: schema.CharacterCreate, db: Session = Depends(get_db_session)
+):
     return crud.character.create(db, query)
 
 
@@ -65,7 +68,12 @@ def post_character(query: schema.CharacterCreate, db: Session = Depends(get_db_s
     response_model=schema.Character,
     summary="patch character by id",
 )
-def patch_character_by_id(character_id: int, query: schema.CharacterUpdate, db: Session = Depends(get_db_session), _: models.User = Depends(get_current_user),):
+def patch_character_by_id(
+    character_id: int,
+    query: schema.CharacterUpdate,
+    db: Session = Depends(get_db_session),
+    _: models.User = Depends(get_current_user),
+):
     character = crud.character.get(db=db, id=character_id)
 
     if not character:
@@ -81,7 +89,11 @@ def patch_character_by_id(character_id: int, query: schema.CharacterUpdate, db: 
     "/{character_id}",
     summary="delete character by id",
 )
-def delete_character_by_id(character_id: int, db: Session = Depends(get_db_session), _: models.User = Depends(get_current_user),):
+def delete_character_by_id(
+    character_id: int,
+    db: Session = Depends(get_db_session),
+    _: models.User = Depends(get_current_user),
+):
     try:
         crud.character.remove(db=db, id=character_id)
     except ElementNotFound:

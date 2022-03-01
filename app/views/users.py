@@ -33,7 +33,12 @@ def get_user_by_id(user_id: int, db: Session = Depends(get_db_session)):
     response_model=schema.UserDB,
     summary="patch an user by id",
 )
-def patch_user_by_id(user_id: int, query: schema.UserUpdate, db: Session = Depends(get_db_session), _: models.User = Depends(get_current_user)):
+def patch_user_by_id(
+    user_id: int,
+    query: schema.UserUpdate,
+    db: Session = Depends(get_db_session),
+    _: models.User = Depends(get_current_user),
+):
     user = crud.user.get(db, id=user_id)
 
     if not user:
@@ -50,7 +55,11 @@ def patch_user_by_id(user_id: int, query: schema.UserUpdate, db: Session = Depen
     response_model=schema.Message,
     summary="delete an user by id",
 )
-def deleter_user_by_id(user_id: int, db: Session = Depends(get_db_session), _: models.User = Depends(get_current_user)):
+def deleter_user_by_id(
+    user_id: int,
+    db: Session = Depends(get_db_session),
+    _: models.User = Depends(get_current_user),
+):
     try:
         crud.user.remove(db=db, id=user_id)
     except ElementNotFound as e:

@@ -26,4 +26,4 @@ class EpisodeFactory(factory.alchemy.SQLAlchemyModelFactory):
     name = FuzzyText(length=6)
     episode = FuzzyInteger(low=1, high=20)
     season = FuzzyInteger(low=1, high=20)
-    air_date = FuzzyDateTime(datetime(2008, 1, 1,  tzinfo=timezone.utc))
+    air_date = FuzzyDateTime(datetime(2008, 1, 1, tzinfo=timezone.utc))

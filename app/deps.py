@@ -11,6 +11,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from app import models
 from app.database import db_context
 from app import crud
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
@@ -20,8 +21,8 @@ async def common_parameters(
     filter: List[str] = Query(
         None,
         description="This filter can accept search query's like `key:value` and will split on the `:`. If it "
-                    "detects more than one `:`, or does not find a `:` it will search for the string in all columns.",
-    )
+        "detects more than one `:`, or does not find a `:` it will search for the string in all columns.",
+    ),
 ) -> Dict[str, Union[List[str], int]]:
     return {"skip": skip, "limit": limit, "filter": filter}
 
@@ -44,7 +45,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         raise credentials_exception
 
     with db_context() as session:
-        user = crud.user.get_by_username(session,  token_data.username)
+        user = crud.user.get_by_username(session, token_data.username)
         if user is None:
             raise credentials_exception
         return user

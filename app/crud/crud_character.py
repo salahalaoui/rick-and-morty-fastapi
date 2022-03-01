@@ -3,7 +3,9 @@ from app import schema
 from app import models
 
 
-class CRUDCharacter(CRUDBase[models.Character, schema.CharacterCreate, schema.CharacterUpdate]):
+class CRUDCharacter(
+    CRUDBase[models.Character, schema.CharacterCreate, schema.CharacterUpdate]
+):
     ...
 
 

@@ -44,7 +44,6 @@ class User(Base):
         return pwd_context.verify(password, self.password)
 
 
-
 class Character(Base):
     __tablename__ = "character"
     id = Column(Integer, primary_key=True)

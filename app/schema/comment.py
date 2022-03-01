@@ -14,8 +14,8 @@ class CommentCreateQuery(BaseModel):
 
     @root_validator
     def any_of(cls, v):
-        if not v['character_id'] and not v['episode_id']:
-            raise ValueError('one of character_id, episode_id must have a value')
+        if not v["character_id"] and not v["episode_id"]:
+            raise ValueError("one of character_id, episode_id must have a value")
         return v
 
 

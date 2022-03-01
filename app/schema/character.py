@@ -28,7 +28,7 @@ class CharacterCreate(BaseModel):
             "status": self.status,
             "species": self.species,
             "type": self.type,
-            "gender": self.gender
+            "gender": self.gender,
         }
 
 
@@ -36,7 +36,7 @@ class CharacterCreateJson(CharacterCreate):
     id: int
 
     def to_dict(self):
-        return {'id': self.id, **CharacterCreate.to_dict(self)}
+        return {"id": self.id, **CharacterCreate.to_dict(self)}
 
 
 class CharacterUpdate(BaseModel):

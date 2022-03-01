@@ -15,6 +15,7 @@ def create_app() -> FastAPI:
     app.celery_app = create_celery()
 
     from app.views import api_router
+
     app.include_router(api_router)
 
     @app.get("/")

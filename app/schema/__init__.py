@@ -26,8 +26,29 @@ class OrmBase(BaseModel):
         orm_mode = True
 
 
-from app.schema.character import Character, Characters, CharacterUpdate, CharacterCreate, CharacterCreateJson
+from app.schema.character import (
+    Character,
+    Characters,
+    CharacterUpdate,
+    CharacterCreate,
+    CharacterCreateJson,
+)
 from app.schema.auth import Task, TaskResult, Token, TokenData
-from app.schema.comment import Comment, CommentUpdate, Comments, CommentCreate, CommentCreateQuery
-from app.schema.episode import Episode, EpisodeCreate, EpisodeDB, Episodes, EpisodeUpdate, EpisodeWithCharacters, EpisodeCreateJson, postEpisodeQuery
+from app.schema.comment import (
+    Comment,
+    CommentUpdate,
+    Comments,
+    CommentCreate,
+    CommentCreateQuery,
+)
+from app.schema.episode import (
+    Episode,
+    EpisodeCreate,
+    EpisodeDB,
+    Episodes,
+    EpisodeUpdate,
+    EpisodeWithCharacters,
+    EpisodeCreateJson,
+    postEpisodeQuery,
+)
 from app.schema.user import User, UserUpdate, UserDB

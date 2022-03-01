@@ -24,13 +24,13 @@ router = APIRouter()
 def get_comments(
     response: Response,
     common: dict = Depends(common_parameters),
-    db: Session = Depends(get_db_session)
+    db: Session = Depends(get_db_session),
 ):
     comments, header_range = crud.comment.get_multi(
         db=db,
-        skip=common['skip'],
-        limit=common['limit'],
-        filter_parameters=common["filter"]
+        skip=common["skip"],
+        limit=common["limit"],
+        filter_parameters=common["filter"],
     )
     response.headers["Content-Range"] = header_range
     return comments
@@ -40,12 +40,12 @@ def get_comments(
     "/",
     response_model=schema.Comment,
     summary="post a comment",
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
 )
 def post_comment(
     query: schema.CommentCreateQuery,
     db: Session = Depends(get_db_session),
-    current_user: models.User = Depends(get_current_user)
+    current_user: models.User = Depends(get_current_user),
 ):
     if query.episode_id:
         episode = crud.episode.get(db=db, id=query.episode_id)
@@ -61,7 +61,9 @@ def post_comment(
                 status_code=400,
                 detail=f"character {query.episode_id} does not exist",
             )
-    return crud.comment.create(db=db, obj_in=schema.CommentCreate(**dict(query), user_id=current_user.id))
+    return crud.comment.create(
+        db=db, obj_in=schema.CommentCreate(**dict(query), user_id=current_user.id)
+    )
 
 
 @router.patch(
@@ -73,7 +75,7 @@ def patch_comment_by_id(
     comment_id: int,
     query: schema.CommentUpdate,
     db: Session = Depends(get_db_session),
-    _: models.User = Depends(get_current_user)
+    _: models.User = Depends(get_current_user),
 ):
     comment = crud.comment.get(db=db, id=comment_id)
 
@@ -96,7 +98,7 @@ def patch_comment_by_id(
 def delete_comment_by_id(
     comment_id: int,
     db: Session = Depends(get_db_session),
-    _: models.User = Depends(get_current_user)
+    _: models.User = Depends(get_current_user),
 ):
     try:
         crud.comment.remove(db=db, id=comment_id)
@@ -118,13 +120,13 @@ def delete_comment_by_id(
 def download_extract(
     response: Response,
     common: dict = Depends(common_parameters),
-    db: Session = Depends(get_db_session)
+    db: Session = Depends(get_db_session),
 ):
     comments, _ = crud.comment.get_multi(
         db=db,
-        skip=common['skip'],
-        limit=common['limit'],
-        filter_parameters=common["filter"]
+        skip=common["skip"],
+        limit=common["limit"],
+        filter_parameters=common["filter"],
     )
 
     output_filename = f"{uuid()}.csv"
@@ -132,10 +134,9 @@ def download_extract(
         settings.UPLOADS_DEFAULT_DEST, output_filename
     )
 
-    content = pandas.DataFrame([dict(schema.Comment.from_orm(comment)) for comment in comments]).to_csv(
-        index=False,
-        sep=";"
-    )
+    content = pandas.DataFrame(
+        [dict(schema.Comment.from_orm(comment)) for comment in comments]
+    ).to_csv(index=False, sep=";")
     with open(file_location_full_path, "w+") as file_object:
         file_object.write(content)
 

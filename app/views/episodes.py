@@ -9,6 +9,7 @@ from app.deps import get_current_user
 from app.errors import ElementNotFound
 from app.database import get_db_session
 from app import errors
+
 router = APIRouter()
 
 
@@ -42,7 +43,7 @@ def get_episode_by_id(episode_id: int, db: Session = Depends(get_db_session)):
     "/",
     response_model=schema.Episode,
     summary="post episode",
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
 )
 def post_episode(query: schema.postEpisodeQuery, db: Session = Depends(get_db_session)):
     try:
@@ -53,16 +54,15 @@ def post_episode(query: schema.postEpisodeQuery, db: Session = Depends(get_db_se
             detail=str(e),
         )
 
+
 @router.patch(
-    "/{episode_id}",
-    response_model=schema.Episode,
-    summary="patch episode by id"
+    "/{episode_id}", response_model=schema.Episode, summary="patch episode by id"
 )
 def patch_episode_by_id(
     episode_id: int,
     query: schema.EpisodeUpdate,
     db: Session = Depends(get_db_session),
-    _: models.User = Depends(get_current_user)
+    _: models.User = Depends(get_current_user),
 ):
     episode = crud.episode.get(db, id=episode_id)
 
@@ -83,7 +83,7 @@ def patch_episode_by_id(
 def delete_episode_by_id(
     episode_id: int,
     db: Session = Depends(get_db_session),
-    _: models.User = Depends(get_current_user)
+    _: models.User = Depends(get_current_user),
 ):
     try:
         crud.episode.remove(db=db, id=episode_id)
@@ -93,4 +93,6 @@ def delete_episode_by_id(
             detail=str(e),
         )
 
-    return schema.Message(message=f"episode {episode_id} has been deleted from the database")
+    return schema.Message(
+        message=f"episode {episode_id} has been deleted from the database"
+    )
