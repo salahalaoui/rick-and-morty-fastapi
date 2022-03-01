@@ -54,7 +54,7 @@ The application uses Alembic. Alembic is great for easily making changes to data
 - For fetching meta data from imbd I will use `Beautifulsoup` , which is an excellent library for scrapping html data `https://www.crummy.com/software/BeautifulSoup/bs4/doc/`
 - Implementation of a comment moderation workflow: : For this I think the best is to create a Role table, each user has a role (admin, user, moderator). We can then authorize certain routes according to the role of the user, whether it is a superuser or a normal user.
 
-The comment table would have an additional status column (`new`, `in review`, `rejected`, `approved`), we must also add a `GET /review_comments` route so that moderators can access the comments to be validated, we already have a `PATCH /comments` route for edit the comment.
+The comment table would have an additional status column (`new`, `in review`, `rejected`, `approved`).
 
 In addition to this, the `GET /comments` route must be modified to filter only on comments already approved,
 
