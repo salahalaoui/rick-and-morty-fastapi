@@ -56,8 +56,6 @@ The application uses Alembic. Alembic is great for easily making changes to data
 
 The comment table would have an additional status column (`new`, `in review`, `rejected`, `approved`).
 
-In addition to this, the `GET /comments` route must be modified to filter only on comments already approved,
-
 - Statistical indicators (in csv format) : Thanks to sqlalchemy we have access to high-level relationships to easily obtain the comments linked to an episode, we can easily obtain the count or filter before on the status of the comments or the average length of the body of the comments
 
 I added `celery` in the application, I think for future development especially those of the current backlog `celery` can bring a real advantage. For example `celery` allows to have a periodic task which will run once a day for example at 3am to get the comments of the last 24 hours, process them and make them available in file format, then the PO can simply get the file which will subsequently be a huge time saver.
