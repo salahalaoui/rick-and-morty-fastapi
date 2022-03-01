@@ -19,7 +19,7 @@ $ docker compose up
 
 The API implements some routes that should not stay unprotected. In order to use these routes you should first authenticate at the top right of the application docs (`0.0.0.0:8000/docs`) in the button that reads `Authorize`. Before that you need to create a new user with the POST `register`
 
-## Migration from json to pricemap
+## Migration from json to postgres database
 
 In the app container to migrate data from previous json files to the postgres database :
 
